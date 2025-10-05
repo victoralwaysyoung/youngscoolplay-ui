@@ -179,26 +179,36 @@ download_package() {
     
     # 解压文件（显示详细信息）
     log_info "开始解压..."
-    if ! unzip -o "${APP_NAME}.zip"; then
-        log_error "解压失败"
-        log_info "尝试列出当前目录内容:"
-        ls -la
-        exit 1
-    fi
+    unzip -o "${APP_NAME}.zip"
+    local unzip_exit_code=$?
+    
+    log_info "unzip 命令退出码: $unzip_exit_code"
     
     log_info "解压完成，检查目录结构:"
     ls -la
     
-    if [[ ! -d "${APP_NAME}-production" ]]; then
+    # 检查目录是否存在（更宽松的检查）
+    if [[ -d "${APP_NAME}-production" ]]; then
+        log_success "找到安装目录: ${APP_NAME}-production"
+        cd "${APP_NAME}-production"
+    elif [[ $unzip_exit_code -eq 1 ]] && [[ -d "${APP_NAME}-production" ]]; then
+        # unzip 退出码为 1 通常表示警告（如路径分隔符），但文件已成功解压
+        log_warning "unzip 有警告但解压成功，继续安装..."
+        cd "${APP_NAME}-production"
+    else
         log_error "解压失败，找不到安装目录 ${APP_NAME}-production"
         log_info "当前目录内容:"
         ls -la
         log_info "尝试查找可能的目录:"
         find . -type d -name "*${APP_NAME}*" -o -name "*production*" 2>/dev/null || true
+        
+        # 如果 unzip 退出码不是 0，显示错误信息
+        if [[ $unzip_exit_code -ne 0 ]]; then
+            log_error "unzip 命令失败，退出码: $unzip_exit_code"
+        fi
         exit 1
     fi
     
-    cd "${APP_NAME}-production"
     log_success "安装包下载并解压完成"
 }
 
