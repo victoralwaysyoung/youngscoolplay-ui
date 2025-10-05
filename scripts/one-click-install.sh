@@ -172,10 +172,29 @@ download_package() {
     
     # 解压文件
     log_info "解压安装包..."
-    unzip -q "${APP_NAME}.zip"
+    
+    # 显示压缩包信息
+    log_info "压缩包信息:"
+    unzip -l "${APP_NAME}.zip" | head -20
+    
+    # 解压文件（显示详细信息）
+    log_info "开始解压..."
+    if ! unzip -o "${APP_NAME}.zip"; then
+        log_error "解压失败"
+        log_info "尝试列出当前目录内容:"
+        ls -la
+        exit 1
+    fi
+    
+    log_info "解压完成，检查目录结构:"
+    ls -la
     
     if [[ ! -d "${APP_NAME}-production" ]]; then
-        log_error "解压失败，找不到安装目录"
+        log_error "解压失败，找不到安装目录 ${APP_NAME}-production"
+        log_info "当前目录内容:"
+        ls -la
+        log_info "尝试查找可能的目录:"
+        find . -type d -name "*${APP_NAME}*" -o -name "*production*" 2>/dev/null || true
         exit 1
     fi
     
