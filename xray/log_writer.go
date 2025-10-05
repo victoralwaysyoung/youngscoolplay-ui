@@ -5,7 +5,7 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/mhsanaei/3youngscoolplay-ui/v2/logger"
+	"github.com/victoralwaysyoung/youngscoolplay-ui/logger"
 )
 
 // NewLogWriter returns a new LogWriter for processing Xray log output.

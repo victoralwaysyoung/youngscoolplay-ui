@@ -3,7 +3,7 @@ package xray
 import (
 	"bytes"
 
-	"github.com/mhsanaei/3youngscoolplay-ui/v2/util/json_util"
+	"github.com/victoralwaysyoung/youngscoolplay-ui/util/json_util"
 )
 
 // InboundConfig represents an Xray inbound configuration.

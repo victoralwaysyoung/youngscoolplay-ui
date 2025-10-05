@@ -156,7 +156,7 @@ get_latest_version() {
 download_package() {
     log_info "下载安装包..."
     
-    local download_url="https://github.com/${REPO_OWNER}/${REPO_NAME}/releases/download/${VERSION}/${APP_NAME}-ubuntu24.zip"
+    local download_url="https://github.com/${REPO_OWNER}/${REPO_NAME}/releases/download/${VERSION}/${APP_NAME}-production.zip"
     local temp_dir="/tmp/${APP_NAME}-install"
     
     # 创建临时目录

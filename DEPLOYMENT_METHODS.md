@@ -59,7 +59,7 @@ curl -s "https://api.github.com/repos/victoralwaysyoung/youngscoolplay-ui/releas
 #### 4. 下载安装包
 从 GitHub Releases 下载对应版本的安装包：
 ```bash
-wget "https://github.com/victoralwaysyoung/youngscoolplay-ui/releases/download/v1.0.0/youngscoolplay-ui-ubuntu24.zip"
+wget "https://github.com/victoralwaysyoung/youngscoolplay-ui/releases/download/v1.0.0/youngscoolplay-ui-production.zip"
 ```
 
 #### 5. 应用安装
@@ -161,14 +161,14 @@ docker run -d --name youngscoolplay-ui \
 
 ```bash
 # 1. 下载安装包
-wget https://github.com/victoralwaysyoung/youngscoolplay-ui/releases/download/v1.0.0/youngscoolplay-ui-ubuntu24.zip
+wget https://github.com/victoralwaysyoung/youngscoolplay-ui/releases/download/v1.0.0/youngscoolplay-ui-production.zip
 
 # 2. 解压
-unzip youngscoolplay-ui-ubuntu24.zip
+unzip youngscoolplay-ui-production.zip
 
 # 3. 运行安装脚本
-cd youngscoolplay-ui-ubuntu24
-sudo ./install-ubuntu24.sh
+cd youngscoolplay-ui-production
+sudo ./install.sh
 ```
 
 ### 3. 源码编译部署
@@ -223,7 +223,7 @@ bash <(curl -Ls https://raw.githubusercontent.com/victoralwaysyoung/youngscoolpl
 
 # 手动更新
 systemctl stop youngscoolplay-ui
-wget https://github.com/victoralwaysyoung/youngscoolplay-ui/releases/download/latest/youngscoolplay-ui-ubuntu24.zip
+wget https://github.com/victoralwaysyoung/youngscoolplay-ui/releases/download/latest/youngscoolplay-ui-production.zip
 # ... 解压和替换文件
 systemctl start youngscoolplay-ui
 ```

@@ -11,10 +11,10 @@ import (
 	"path"
 	"slices"
 
-	"github.com/mhsanaei/3youngscoolplay-ui/v2/config"
-	"github.com/mhsanaei/3youngscoolplay-ui/v2/database/model"
-	"github.com/mhsanaei/3youngscoolplay-ui/v2/util/crypto"
-	"github.com/mhsanaei/3youngscoolplay-ui/v2/xray"
+	"github.com/victoralwaysyoung/youngscoolplay-ui/config"
+	"github.com/victoralwaysyoung/youngscoolplay-ui/database/model"
+	"github.com/victoralwaysyoung/youngscoolplay-ui/util/crypto"
+	"github.com/victoralwaysyoung/youngscoolplay-ui/xray"
 
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"

@@ -156,7 +156,7 @@ get_latest_version() {
 download_package() {
     log_info "下载安装包..."
     
-    local download_url="https://github.com/${REPO_OWNER}/${REPO_NAME}/releases/download/${VERSION}/${APP_NAME}-ubuntu24.zip"
+    local download_url="https://github.com/${REPO_OWNER}/${REPO_NAME}/releases/download/${VERSION}/${APP_NAME}-production.zip"
     local temp_dir="/tmp/${APP_NAME}-install"
     
     # 创建临时目录
@@ -174,12 +174,12 @@ download_package() {
     log_info "解压安装包..."
     unzip -q "${APP_NAME}.zip"
     
-    if [[ ! -d "${APP_NAME}-ubuntu24" ]]; then
-        log_error "解压后未找到预期的目录结构"
+    if [[ ! -d "${APP_NAME}-production" ]]; then
+        log_error "解压失败，找不到安装目录"
         exit 1
     fi
     
-    cd "${APP_NAME}-ubuntu24"
+    cd "${APP_NAME}-production"
     log_success "安装包下载并解压完成"
 }
 

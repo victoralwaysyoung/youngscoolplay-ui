@@ -6,12 +6,12 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/mhsanaei/3youngscoolplay-ui/v2/database/model"
-	"github.com/mhsanaei/3youngscoolplay-ui/v2/logger"
-	"github.com/mhsanaei/3youngscoolplay-ui/v2/util/json_util"
-	"github.com/mhsanaei/3youngscoolplay-ui/v2/util/random"
-	"github.com/mhsanaei/3youngscoolplay-ui/v2/web/service"
-	"github.com/mhsanaei/3youngscoolplay-ui/v2/xray"
+	"github.com/victoralwaysyoung/youngscoolplay-ui/database/model"
+	"github.com/victoralwaysyoung/youngscoolplay-ui/logger"
+	"github.com/victoralwaysyoung/youngscoolplay-ui/util/json_util"
+	"github.com/victoralwaysyoung/youngscoolplay-ui/util/random"
+	"github.com/victoralwaysyoung/youngscoolplay-ui/web/service"
+	"github.com/victoralwaysyoung/youngscoolplay-ui/xray"
 )
 
 //go:embed default.json

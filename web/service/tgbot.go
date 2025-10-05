@@ -1,4 +1,4 @@
-package service
+﻿﻿﻿﻿﻿package service
 
 import (
 	"context"
@@ -19,14 +19,14 @@ import (
 	"sync"
 	"time"
 
-	"github.com/mhsanaei/3youngscoolplay-ui/v2/config"
-	"github.com/mhsanaei/3youngscoolplay-ui/v2/database"
-	"github.com/mhsanaei/3youngscoolplay-ui/v2/database/model"
-	"github.com/mhsanaei/3youngscoolplay-ui/v2/logger"
-	"github.com/mhsanaei/3youngscoolplay-ui/v2/util/common"
-	"github.com/mhsanaei/3youngscoolplay-ui/v2/web/global"
-	"github.com/mhsanaei/3youngscoolplay-ui/v2/web/locale"
-	"github.com/mhsanaei/3youngscoolplay-ui/v2/xray"
+	"github.com/victoralwaysyoung/youngscoolplay-ui/config"
+	"github.com/victoralwaysyoung/youngscoolplay-ui/database"
+	"github.com/victoralwaysyoung/youngscoolplay-ui/database/model"
+	"github.com/victoralwaysyoung/youngscoolplay-ui/logger"
+	"github.com/victoralwaysyoung/youngscoolplay-ui/util/common"
+	"github.com/victoralwaysyoung/youngscoolplay-ui/web/global"
+	"github.com/victoralwaysyoung/youngscoolplay-ui/web/locale"
+	"github.com/victoralwaysyoung/youngscoolplay-ui/xray"
 
 	"github.com/google/uuid"
 	"github.com/mymmrac/telego"

@@ -21,7 +21,7 @@ LOG_DIR="/var/log/${APP_NAME}"
 CONFIG_DIR="/etc/${APP_NAME}"
 SERVICE_NAME="${APP_NAME}"
 BACKUP_DIR="/opt/${APP_NAME}/backups"
-GITHUB_REPO="https://github.com/yourusername/youngscoolplay-ui.git"
+GITHUB_REPO="https://github.com/victoralwaysyoung/youngscoolplay-ui.git"
 BRANCH="main"
 BUILD_TIMEOUT=300
 HEALTH_CHECK_TIMEOUT=60
@@ -280,7 +280,7 @@ create_systemd_service() {
     sudo tee "/etc/systemd/system/${SERVICE_NAME}.service" > /dev/null <<EOF
 [Unit]
 Description=YoungsCoolPlay UI Service
-Documentation=https://github.com/yourusername/youngscoolplay-ui
+Documentation=https://github.com/victoralwaysyoung/youngscoolplay-ui
 After=network.target
 Wants=network.target
 

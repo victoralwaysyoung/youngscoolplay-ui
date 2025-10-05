@@ -425,7 +425,7 @@ git push origin main
 git remote -v
 
 # 更改远程地址
-git remote set-url origin git@github.com:newusername/youngscoolplay-ui.git
+git remote set-url origin git@github.com:victoralwaysyoung/youngscoolplay-ui.git
 ```
 
 ### 5. 大文件处理

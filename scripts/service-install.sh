@@ -166,7 +166,7 @@ create_systemd_service() {
     sudo tee "/etc/systemd/system/${SERVICE_NAME}.service" > /dev/null <<EOF
 [Unit]
 Description=YoungsCoolPlay UI - Modern Web UI for Xray Management
-Documentation=https://github.com/yourusername/youngscoolplay-ui
+Documentation=https://github.com/victoralwaysyoung/youngscoolplay-ui
 After=network-online.target
 Wants=network-online.target
 RequiresMountsFor=$APP_DIR

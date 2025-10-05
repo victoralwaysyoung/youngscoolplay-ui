@@ -1,0 +1,15 @@
+[Unit]
+Description=YoungsCoolPlay UI
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/etc/youngscoolplay-ui
+ExecStart=/usr/local/bin/youngscoolplay-ui
+Restart=always
+RestartSec=5
+Environment=PATH=/usr/local/bin:/usr/bin:/bin
+
+[Install]
+WantedBy=multi-user.target

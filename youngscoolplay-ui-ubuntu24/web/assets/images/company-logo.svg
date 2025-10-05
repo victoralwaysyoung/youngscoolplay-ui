@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="120" height="60" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#008771;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00b894;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- 背景圆形 -->
+  <circle cx="30" cy="30" r="25" fill="url(#logoGradient)" opacity="0.1"/>
+  
+  <!-- 主要图标 - 代表进出口贸易的箭头和地球 -->
+  <g transform="translate(10, 10)">
+    <!-- 地球轮廓 -->
+    <circle cx="20" cy="20" r="15" fill="none" stroke="url(#logoGradient)" stroke-width="2"/>
+    
+    <!-- 经纬线 -->
+    <ellipse cx="20" cy="20" rx="15" ry="7" fill="none" stroke="url(#logoGradient)" stroke-width="1" opacity="0.6"/>
+    <ellipse cx="20" cy="20" rx="7" ry="15" fill="none" stroke="url(#logoGradient)" stroke-width="1" opacity="0.6"/>
+    
+    <!-- 进出口箭头 -->
+    <path d="M 8 12 L 15 12 L 12 8 M 15 12 L 12 16" fill="none" stroke="url(#logoGradient)" stroke-width="2" stroke-linecap="round"/>
+    <path d="M 32 28 L 25 28 L 28 32 M 25 28 L 28 24" fill="none" stroke="url(#logoGradient)" stroke-width="2" stroke-linecap="round"/>
+  </g>
+  
+  <!-- 公司名称缩写 -->
+  <text x="65" y="25" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="url(#logoGradient)">漾式酷玩</text>
+  <text x="65" y="40" font-family="Arial, sans-serif" font-size="10" fill="#666">YOUNGSCOOL PLAY</text>
+  <text x="65" y="52" font-family="Arial, sans-serif" font-size="8" fill="#999">进出口贸易</text>
+</svg>

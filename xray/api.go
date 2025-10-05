@@ -11,8 +11,8 @@ import (
 	"regexp"
 	"time"
 
-	"github.com/mhsanaei/3youngscoolplay-ui/v2/logger"
-	"github.com/mhsanaei/3youngscoolplay-ui/v2/util/common"
+	"github.com/victoralwaysyoung/youngscoolplay-ui/logger"
+	"github.com/victoralwaysyoung/youngscoolplay-ui/util/common"
 
 	"github.com/xtls/xray-core/app/proxyman/command"
 	statsService "github.com/xtls/xray-core/app/stats/command"

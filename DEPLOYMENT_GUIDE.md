@@ -67,7 +67,7 @@ YoungsCoolPlay UI 是一个高性能的 Web 应用程序，提供：
 
 1. **克隆项目**
 ```bash
-git clone https://github.com/your-username/youngscoolplay-ui.git
+git clone https://github.com/victoralwaysyoung/youngscoolplay-ui.git
 cd youngscoolplay-ui
 ```
 
@@ -206,7 +206,7 @@ ssh-add ~/.ssh/id_ed25519
 git init
 
 # 添加远程仓库
-git remote add origin git@github.com:your-username/youngscoolplay-ui.git
+git remote add origin git@github.com:victoralwaysyoung/youngscoolplay-ui.git
 
 # 检查 .gitignore 文件
 cat .gitignore
@@ -330,7 +330,7 @@ jobs:
 #### 自动化环境设置
 ```bash
 # 下载并执行服务器设置脚本
-wget https://raw.githubusercontent.com/your-username/youngscoolplay-ui/main/scripts/server-setup.sh
+wget https://raw.githubusercontent.com/victoralwaysyoung/youngscoolplay-ui/main/scripts/server-setup.sh
 chmod +x server-setup.sh
 sudo ./server-setup.sh
 ```
@@ -399,7 +399,7 @@ cd /opt/youngscoolplay
 
 #### 克隆代码
 ```bash
-git clone https://github.com/your-username/youngscoolplay-ui.git .
+git clone https://github.com/victoralwaysyoung/youngscoolplay-ui.git .
 ```
 
 #### 自动化部署
@@ -409,7 +409,7 @@ chmod +x scripts/deploy.sh
 ./scripts/deploy.sh --help
 
 # 执行部署
-./scripts/deploy.sh --branch main --repo https://github.com/your-username/youngscoolplay-ui.git
+./scripts/deploy.sh --branch main --repo https://github.com/victoralwaysyoung/youngscoolplay-ui.git
 ```
 
 #### 手动部署步骤
@@ -491,7 +491,7 @@ sudo chown -R youngscoolplay:youngscoolplay /opt/youngscoolplay
 sudo tee /etc/systemd/system/youngscoolplay.service > /dev/null << 'EOF'
 [Unit]
 Description=YoungsCoolPlay UI Service
-Documentation=https://github.com/your-username/youngscoolplay-ui
+Documentation=https://github.com/victoralwaysyoung/youngscoolplay-ui
 After=network.target
 Wants=network.target
 
@@ -2014,7 +2014,7 @@ Authorization: Bearer <token>
 ```bash
 # Fork 项目到你的 GitHub 账号
 # 克隆你的 fork
-git clone https://github.com/your-username/youngscoolplay-ui.git
+git clone https://github.com/victoralwaysyoung/youngscoolplay-ui.git
 cd youngscoolplay-ui
 
 # 添加上游仓库
@@ -2077,8 +2077,8 @@ go test -bench=. ./...
 
 如果你在使用过程中遇到问题，可以通过以下方式获取帮助：
 
-- **GitHub Issues**: [提交问题](https://github.com/your-username/youngscoolplay-ui/issues)
-- **讨论区**: [GitHub Discussions](https://github.com/your-username/youngscoolplay-ui/discussions)
+- **GitHub Issues**: [提交问题](https://github.com/victoralwaysyoung/youngscoolplay-ui/issues)
+- **讨论区**: [GitHub Discussions](https://github.com/victoralwaysyoung/youngscoolplay-ui/discussions)
 - **邮件支持**: support@your-domain.com
 
 ## 🔄 更新日志

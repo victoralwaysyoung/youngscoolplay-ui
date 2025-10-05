@@ -13,9 +13,9 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/mhsanaei/3youngscoolplay-ui/v2/config"
-	"github.com/mhsanaei/3youngscoolplay-ui/v2/logger"
-	"github.com/mhsanaei/3youngscoolplay-ui/v2/util/common"
+	"github.com/victoralwaysyoung/youngscoolplay-ui/config"
+	"github.com/victoralwaysyoung/youngscoolplay-ui/logger"
+	"github.com/victoralwaysyoung/youngscoolplay-ui/util/common"
 )
 
 // GetBinaryName returns the Xray binary filename for the current OS and architecture.

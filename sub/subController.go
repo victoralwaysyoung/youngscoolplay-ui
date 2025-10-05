@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/mhsanaei/3youngscoolplay-ui/v2/config"
+	"github.com/victoralwaysyoung/youngscoolplay-ui/config"
 
 	"github.com/gin-gonic/gin"
 )

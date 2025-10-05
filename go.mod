@@ -1,4 +1,4 @@
-module github.com/mhsanaei/3youngscoolplay-ui/v2
+module github.com/victoralwaysyoung/youngscoolplay-ui
 
 go 1.25.1
 

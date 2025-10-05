@@ -15,13 +15,13 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/mhsanaei/3youngscoolplay-ui/v2/logger"
-	"github.com/mhsanaei/3youngscoolplay-ui/v2/util/common"
-	webpkg "github.com/mhsanaei/3youngscoolplay-ui/v2/web"
-	"github.com/mhsanaei/3youngscoolplay-ui/v2/web/locale"
-	"github.com/mhsanaei/3youngscoolplay-ui/v2/web/middleware"
-	"github.com/mhsanaei/3youngscoolplay-ui/v2/web/network"
-	"github.com/mhsanaei/3youngscoolplay-ui/v2/web/service"
+	"github.com/victoralwaysyoung/youngscoolplay-ui/logger"
+	"github.com/victoralwaysyoung/youngscoolplay-ui/util/common"
+	webpkg "github.com/victoralwaysyoung/youngscoolplay-ui/web"
+	"github.com/victoralwaysyoung/youngscoolplay-ui/web/locale"
+	"github.com/victoralwaysyoung/youngscoolplay-ui/web/middleware"
+	"github.com/victoralwaysyoung/youngscoolplay-ui/web/network"
+	"github.com/victoralwaysyoung/youngscoolplay-ui/web/service"
 
 	"github.com/gin-gonic/gin"
 )

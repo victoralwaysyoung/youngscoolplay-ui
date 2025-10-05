@@ -147,13 +147,13 @@ install_YOUNGSCOOLPLAY-UI() {
 
     # Download resources
     if [ $# == 0 ]; then
-        tag_version=$(curl -Ls "https://api.github.com/repos/MHSanaei/3YOUNGSCOOLPLAY-UI/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+        tag_version=$(curl -Ls "https://api.github.com/repos/youngscoolplay/youngscoolplay-ui/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
         if [[ ! -n "$tag_version" ]]; then
             echo -e "${red}Failed to fetch YOUNGSCOOLPLAY-UI version, it may be due to GitHub API restrictions, please try it later${plain}"
             exit 1
         fi
         echo -e "Got YOUNGSCOOLPLAY-UI latest version: ${tag_version}, beginning the installation..."
-        wget -N -O /usr/local/YOUNGSCOOLPLAY-UI-linux-$(arch).tar.gz https://github.com/MHSanaei/3YOUNGSCOOLPLAY-UI/releases/download/${tag_version}/YOUNGSCOOLPLAY-UI-linux-$(arch).tar.gz
+        wget -N -O /usr/local/YOUNGSCOOLPLAY-UI-linux-$(arch).tar.gz https://github.com/youngscoolplay/youngscoolplay-ui/releases/download/${tag_version}/YOUNGSCOOLPLAY-UI-linux-$(arch).tar.gz
         if [[ $? -ne 0 ]]; then
             echo -e "${red}Downloading YOUNGSCOOLPLAY-UI failed, please be sure that your server can access GitHub ${plain}"
             exit 1
@@ -168,7 +168,7 @@ install_YOUNGSCOOLPLAY-UI() {
             exit 1
         fi
 
-        url="https://github.com/MHSanaei/3YOUNGSCOOLPLAY-UI/releases/download/${tag_version}/YOUNGSCOOLPLAY-UI-linux-$(arch).tar.gz"
+        url="https://github.com/youngscoolplay/youngscoolplay-ui/releases/download/${tag_version}/YOUNGSCOOLPLAY-UI-linux-$(arch).tar.gz"
         echo -e "Beginning to install YOUNGSCOOLPLAY-UI $1"
         wget -N -O /usr/local/YOUNGSCOOLPLAY-UI-linux-$(arch).tar.gz ${url}
         if [[ $? -ne 0 ]]; then
@@ -176,7 +176,7 @@ install_YOUNGSCOOLPLAY-UI() {
             exit 1
         fi
     fi
-    wget -O /usr/bin/YOUNGSCOOLPLAY-UI-temp https://raw.githubusercontent.com/MHSanaei/3YOUNGSCOOLPLAY-UI/main/YOUNGSCOOLPLAY-UI.sh
+    wget -O /usr/bin/YOUNGSCOOLPLAY-UI-temp https://raw.githubusercontent.com/youngscoolplay/youngscoolplay-ui/main/YOUNGSCOOLPLAY-UI.sh
 
     # Stop YOUNGSCOOLPLAY-UI service and remove old resources
     if [[ -e /usr/local/YOUNGSCOOLPLAY-UI/ ]]; then
@@ -209,7 +209,7 @@ install_YOUNGSCOOLPLAY-UI() {
     config_after_install
 
     if [[ $release == "alpine" ]]; then
-        wget -O /etc/init.d/YOUNGSCOOLPLAY-UI https://raw.githubusercontent.com/MHSanaei/3YOUNGSCOOLPLAY-UI/main/YOUNGSCOOLPLAY-UI.rc
+        wget -O /etc/init.d/YOUNGSCOOLPLAY-UI https://raw.githubusercontent.com/youngscoolplay/youngscoolplay-ui/main/YOUNGSCOOLPLAY-UI.rc
         chmod +x /etc/init.d/YOUNGSCOOLPLAY-UI
         rc-update add YOUNGSCOOLPLAY-UI
         rc-service YOUNGSCOOLPLAY-UI start
@@ -222,8 +222,7 @@ install_YOUNGSCOOLPLAY-UI() {
 
     echo -e "${green}YOUNGSCOOLPLAY-UI ${tag_version}${plain} installation finished, it is running now..."
     echo -e ""
-    echo -e "┌───────────────────────────────────────────────────────�?�? ${blue}YOUNGSCOOLPLAY-UI control menu usages (subcommands):${plain}              �?�?                                                      �?�? ${blue}YOUNGSCOOLPLAY-UI${plain}              - Admin Management Script          �?�? ${blue}YOUNGSCOOLPLAY-UI start${plain}        - Start                            �?�? ${blue}YOUNGSCOOLPLAY-UI stop${plain}         - Stop                             �?�? ${blue}YOUNGSCOOLPLAY-UI restart${plain}      - Restart                          �?�? ${blue}YOUNGSCOOLPLAY-UI status${plain}       - Current Status                   �?�? ${blue}YOUNGSCOOLPLAY-UI settings${plain}     - Current Settings                 �?�? ${blue}YOUNGSCOOLPLAY-UI enable${plain}       - Enable Autostart on OS Startup   �?�? ${blue}YOUNGSCOOLPLAY-UI disable${plain}      - Disable Autostart on OS Startup  �?�? ${blue}YOUNGSCOOLPLAY-UI log${plain}          - Check logs                       �?�? ${blue}YOUNGSCOOLPLAY-UI banlog${plain}       - Check Fail2ban ban logs          �?�? ${blue}YOUNGSCOOLPLAY-UI update${plain}       - Update                           �?�? ${blue}YOUNGSCOOLPLAY-UI legacy${plain}       - legacy version                   �?�? ${blue}YOUNGSCOOLPLAY-UI install${plain}      - Install                          �?�? ${blue}YOUNGSCOOLPLAY-UI uninstall${plain}    - Uninstall                        �?└───────────────────────────────────────────────────────�?
-}
+    echo -e "┌───────────────────────────────────────────────────────�?�? ${blue}YOUNGSCOOLPLAY-UI control menu usages (subcommands):${plain}              �?�?                                                      �?�? ${blue}YOUNGSCOOLPLAY-UI${plain}              - Admin Management Script          �?�? ${blue}YOUNGSCOOLPLAY-UI start${plain}        - Start                            �?�? ${blue}YOUNGSCOOLPLAY-UI stop${plain}         - Stop                             �?�? ${blue}YOUNGSCOOLPLAY-UI restart${plain}      - Restart                          �?�? ${blue}YOUNGSCOOLPLAY-UI status${plain}       - Current Status                   �?�? ${blue}YOUNGSCOOLPLAY-UI settings${plain}     - Current Settings                 �?�? ${blue}YOUNGSCOOLPLAY-UI enable${plain}       - Enable Autostart on OS Startup   �?�? ${blue}YOUNGSCOOLPLAY-UI disable${plain}      - Disable Autostart on OS Startup  �?�? ${blue}YOUNGSCOOLPLAY-UI log${plain}          - Check logs                       �?�? ${blue}YOUNGSCOOLPLAY-UI banlog${plain}       - Check Fail2ban ban logs          �?�? ${blue}YOUNGSCOOLPLAY-UI update${plain}       - Update                           �?�? ${blue}YOUNGSCOOLPLAY-UI legacy${plain}       - legacy version                   �?�? ${blue}YOUNGSCOOLPLAY-UI install${plain}      - Install                          �?�? ${blue}YOUNGSCOOLPLAY-UI uninstall${plain}    - Uninstall                        �?└───────────────────────────────────────────────────────�?""
 
 echo -e "${green}Running...${plain}"
 install_base

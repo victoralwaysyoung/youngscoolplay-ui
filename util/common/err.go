@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/mhsanaei/3youngscoolplay-ui/v2/logger"
+	"github.com/victoralwaysyoung/youngscoolplay-ui/logger"
 )
 
 // NewErrorf creates a new error with formatted message.
