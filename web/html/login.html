@@ -1,0 +1,376 @@
+{{ template "page/head_start" .}}
+  <link rel="stylesheet" href="{{ .base_path }}assets/css/company-login.css">
+{{ template "page/head_end" .}}
+
+{{ template "page/body_start" .}}
+<a-layout id="app" v-cloak :class="themeSwitcher.currentTheme + ' login-app'">
+  <transition name="list" appear>
+  <a-layout-content class="under min-h-0">
+      <div class="waves-header">
+        <div class="waves-inner-header"></div>
+        <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+          viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+          <defs>
+            <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+          </defs>
+          <g class="parallax">
+            <use xlink:href="#gentle-wave" x="48" y="0" fill="rgba(0, 135, 113, 0.08)" />
+            <use xlink:href="#gentle-wave" x="48" y="3" fill="rgba(0, 135, 113, 0.08)" />
+            <use xlink:href="#gentle-wave" x="48" y="5" fill="rgba(0, 135, 113, 0.08)" />
+            <use xlink:href="#gentle-wave" x="48" y="7" fill="#c7ebe2" />
+          </g>
+        </svg>
+      </div>
+  <a-row type="flex" justify="center" align="middle" class="h-100 overflow-y-auto overflow-x-hidden">
+        <a-col :xs="22" :sm="12" :md="10" :lg="8" :xl="6" :xxl="5" id="login" class="my-3rem">
+          <template v-if="!loadingStates.fetched">
+            <div class="text-center">
+              <a-spin size="large" />
+            </div>
+          </template>
+          <template v-else>
+            <div class="setting-section">
+              <a-popover :overlay-class-name="themeSwitcher.currentTheme" title='{{ i18n "menu.settings" }}'
+                placement="bottomRight" trigger="click">
+                <template slot="content">
+                  <a-space direction="vertical" :size="10">
+                    <a-theme-switch-login></a-theme-switch-login>
+                  </a-space>
+                </template>
+                <a-button shape="circle" icon="setting"></a-button>
+              </a-popover>
+            </div>
+            <!-- 公司Logo和名称 -->
+            <a-row type="flex" justify="center" class="company-header">
+              <a-col :style="{ width: '100%', textAlign: 'center', marginBottom: '2rem' }">
+                <h1 class="company-name">四川漾式酷玩进出口贸易有限公司</h1>
+                <h3 class="system-title">内部专用系统</h3>
+              </a-col>
+            </a-row>
+            <a-row type="flex" justify="center">
+              <a-col :style="{ width: '100%' }">
+                <h2 class="title headline zoom">
+                  <span class="words-wrapper">
+                    <span class="is-visible">{{ i18n "pages.login.hello" }}</span>
+                    <span>{{ i18n "pages.login.title" }}</span>
+                  </span>
+                </h2>
+              </a-col>
+            </a-row>
+            <a-row type="flex" justify="center">
+              <a-col span="24">
+                <a-form @submit.prevent="login">
+                  <a-space direction="vertical" size="middle">
+                    <a-form-item>
+                      <a-input autocomplete="username" name="username" v-model.trim="user.username"
+                        placeholder='{{ i18n "username" }}' autofocus required>
+                        <a-icon slot="prefix" type="user" class="fs-1rem"></a-icon>
+                      </a-input>
+                    </a-form-item>
+                    <a-form-item>
+                      <a-input-password autocomplete="password" name="password" v-model.trim="user.password"
+                        placeholder='{{ i18n "password" }}' required>
+                        <a-icon slot="prefix" type="lock" class="fs-1rem"></a-icon>
+                      </a-input-password>
+                    </a-form-item>
+                    <a-form-item v-if="twoFactorEnable">
+                      <a-input autocomplete="one-time-code" name="twoFactorCode" v-model.trim="user.twoFactorCode"
+                        placeholder='{{ i18n "twoFactorCode" }}' required>
+                        <a-icon slot="prefix" type="key" class="fs-1rem"></a-icon>
+                      </a-input>
+                    </a-form-item>
+                    <!-- 服务条款勾选框 -->
+                    <a-form-item>
+                      <a-checkbox v-model="agreementChecked" @change="onAgreementChange">
+                        我已阅读并同意《跨境网络访问软件使用协议与免责声明》
+                      </a-checkbox>
+                      <div style="margin-top: 8px;">
+                        <a-button type="link" size="small" @click="showAgreementModal" style="padding: 0; height: auto;">
+                          查看完整协议
+                        </a-button>
+                      </div>
+                    </a-form-item>
+                    <a-form-item>
+                      <a-row justify="center" class="centered">
+                        <div class="wave-btn-bg wave-btn-bg-cl h-50px mt-1rem" :style="loadingStates.spinning ? 'width: 52px' : 'display: inline-block'">
+                          <a-button class="ant-btn-primary-login" type="primary" :loading="loadingStates.spinning"
+                            :disabled="!agreementChecked" :icon="loadingStates.spinning ? 'poweroff' : undefined" html-type="submit">
+                            [[ loadingStates.spinning ? '' : '{{ i18n "login" }}' ]]
+                          </a-button>
+                        </div>
+                      </a-row>
+                    </a-form-item>
+                  </a-space>
+                </a-form>
+              </a-col>
+            </a-row>
+          </template>
+        </a-col>
+      </a-row>
+    </a-layout-content>
+  </transition>
+  
+  <!-- 协议模态窗口 -->
+  <a-modal
+    title="跨境网络访问软件使用协议与免责声明"
+    :visible="agreementModalVisible"
+    @ok="closeAgreementModal"
+    @cancel="closeAgreementModal"
+    :width="800"
+    :footer="[{text: '我已阅读', type: 'primary', onClick: closeAgreementModal}]"
+    :class="themeSwitcher.currentTheme"
+  >
+    <div class="agreement-content">
+      <div class="agreement-section">
+        <p><strong>重要提示：</strong>请在使用本软件前仔细阅读以下协议内容。如您不同意本协议的任何条款，请立即停止使用并卸载本软件。一旦您勾选"我已阅读并同意以上协议"并登录使用，即视为您已充分理解、认可并无条件接受本协议全部内容，本协议即构成对双方具有法律约束力的有效文件。</p>
+      </div>
+      
+      <div class="agreement-section">
+        <h4>第一部分：软件性质与使用目的</h4>
+        <p>1. 本软件系四川漾式酷玩外贸有限责任公司（以下简称"本公司"）为满足合法合规的跨境电子商务运营技术需要，基于企业内部网络互联需求，在合规范围内为持证合格的进出口企业提供专用网络接入与技术咨询服务。仅限于访问经公司白名单审核的国际电子商务平台（例如：Amazon、eBay、Alibaba International 等），用途仅限于开展正当的国际贸易活动，不得用于其他任何用途。</p>
+        <p>2. 本公司声明：本软件不应被理解或用于规避国家网络监管、访问非法网站、散播违法信息或实施任何危害国家安全、公共安全或他人合法权益的行为。本公司严守《中华人民共和国网络安全法》《中华人民共和国数据安全法》及相关法规要求。用户使用本软件须在法律允许与合规边界内。</p>
+      </div>
+      
+      <div class="agreement-section">
+        <h4>第二部分：用户资格与合规承诺</h4>
+        <p>1. 使用资格：用户须为在中国境内依法登记注册并合法存续的企业法人（含外贸企业、进出口公司等），并能向本公司提供有效企业营业执照复印件、法定代表人/负责人身份证明、企业对外贸易资质证明及企业联系人信息，接受本公司的合规尽职调查（KYC）。</p>
+        <p>2. 使用目的限定：用户承诺仅为合规的对外贸易/国际电商运营目的使用本软件；严禁用于访问境外违法、涉恐涉暴、涉黄涉赌、侵犯知识产权、侵害国家秘密或其他任何违法信息或服务。</p>
+        <p>3. 禁止行为：用户不得反向工程、二次分发、对外售卖、转许可或以任何方式商业化该软件，不得设立二级代理或为非本公司许可第三方提供接入。</p>
+      </div>
+      
+      <div class="agreement-section">
+        <h4>第三部分：访问范围与技术限制（强制）</h4>
+        <p>1. 白名单原则：本公司仅对经审核同意的外部网站/IP建立访问通道，默认仅允许访问经过列入白名单的国际电商平台及相关业务IP/域名；其他全部外部网站默认封禁或无法解析访问。</p>
+        <p>2. 非商业化/非对外开放：本软件仅为内部/客户企业专用，不提供公众下载或销售。一切对外宣称为"VPN服务""翻墙服务"等的宣传均禁止。</p>
+        <p>3. 访问日志与合规审计：为履行法律义务并响应监管要求，本公司将对用户访问行为保留必要的最少量合规日志（如连接时间、接入 IP 段、访问目标域名或IP段、认证主体），并按法律法规要求保存与配合司法/主管机关调查。用户不得以任何理由干预或篡改日志。此日志存于用户自身的服务器上，本公司只保留相应服务器IP，正常合规使用的情况下无需担心隐私泄露。</p>
+      </div>
+      
+      <div class="agreement-section">
+        <h4>第四部分：风险提示与责任分配</h4>
+        <p>1. 风险提示：任何网络技术均存在不可预见的风险（包括但不限于网络中断、数据丢失、第三方攻击或监管变更导致的访问限制等），因此用户需自行评估风险并自行承担可能损失。</p>
+        <p>2. 责任豁免：若用户违反本协议条款或违反法律法规而产生行政处罚、民事赔偿或刑事责任的，相关责任由用户自行承担。本公司在不违反法律要求的前提下，将配合主管机关调查。</p>
+        <p>3. 合规配合义务：用户应配合本公司的合规审查与整改要求，包括但不限于提供必要证照资料、接受安全检测、配合关闭违规行为等。如用户不配合，公司有权终止服务并保留追究其违约及法律责任的权利。</p>
+      </div>
+      
+      <div class="agreement-section">
+        <h4>第五部分：商业模式与许可说明</h4>
+        <p>1. 非经营性提供：本公司对外提供的是技术咨询，非直接对公众经营的 VPN 商业服务。任何要求提供大规模对外接入或代理的请求，应通过正规电信/机房资质审查与许可审批程序进行。</p>
+      </div>
+      
+      <div class="agreement-section">
+        <h4>第六部分：用户承诺与违约责任</h4>
+        <p>1. 用户承诺遵守国家法律法规，如发现用户有违法违规行为，本公司有权立即暂停或终止其使用权限并向主管机关报告。</p>
+        <p>2. 若因用户违法使用导致本公司遭受行政处罚、民事索赔或刑事追究，用户应承担全部责任并赔偿公司因此产生的所有损失（含但不限于罚款、律师费、停产停业损失及名誉损失等）。</p>
+      </div>
+      
+      <div class="agreement-section">
+        <h4>第七部分：争议解决与适用法律</h4>
+        <p>1. 本说明书及其衍生争议均适用中华人民共和国法律。双方因本说明书产生争议，应首先友好协商，协商不成的，任一方可向本公司所在地有管辖权的人民法院提起诉讼。</p>
+        <p>2. 生效：本说明书自用户在登录界面点击"我已阅读并同意"并登录之日起生效。</p>
+      </div>
+    </div>
+  </a-modal>
+</a-layout>
+{{template "page/body_scripts" .}}
+{{template "component/aThemeSwitch" .}}
+<script>
+  const app = new Vue({
+    delimiters: ['[[', ']]'],
+    el: '#app',
+    data: {
+      themeSwitcher,
+      loadingStates: {
+        fetched: false,
+        spinning: false
+      },
+      user: {
+        username: "",
+        password: "",
+        twoFactorCode: ""
+      },
+      twoFactorEnable: false,
+      lang: "",
+      agreementChecked: false,
+      agreementModalVisible: false
+    },
+    async mounted() {
+      this.lang = LanguageManager.getLanguage();
+      this.twoFactorEnable = await this.getTwoFactorEnable();
+    },
+    methods: {
+      async login() {
+        console.log('[Login Debug] 开始登录流程');
+        console.log('[Login Debug] 用户名:', this.user.username);
+        console.log('[Login Debug] 协议同意状态:', this.agreementChecked);
+        
+        if (!this.agreementChecked) {
+          console.warn('[Login Debug] 用户未同意协议，阻止登录');
+          this.$message.error('请先阅读并同意使用协议');
+          return;
+        }
+        
+        this.loadingStates.spinning = true;
+
+        console.log('[Login Debug] 发送登录请求');
+        const msg = await HttpUtil.post('/login', this.user);
+
+        console.log('[Login Debug] 登录响应:', msg);
+        if (msg.success) {
+          console.log('[Login Debug] 登录成功，跳转到面板');
+          location.href = basePath + 'panel/';
+        } else {
+          console.error('[Login Debug] 登录失败:', msg.msg);
+        }
+
+        this.loadingStates.spinning = false;
+      },
+      
+      showAgreementModal() {
+        console.log('[Agreement Debug] 显示协议模态窗口');
+        this.agreementModalVisible = true;
+      },
+      
+      closeAgreementModal() {
+        console.log('[Agreement Debug] 关闭协议模态窗口');
+        this.agreementModalVisible = false;
+        console.log('[Agreement Debug] 协议模态窗口已关闭，不自动勾选协议');
+      },
+      
+      onAgreementChange(e) {
+        this.agreementChecked = e.target.checked;
+        console.log('[Agreement Debug] 协议同意状态变更:', this.agreementChecked);
+        if (this.agreementChecked) {
+          console.log('[Agreement Debug] 用户同意协议');
+        } else {
+          console.log('[Agreement Debug] 用户取消同意协议');
+        }
+      },
+      
+      async getTwoFactorEnable() {
+        console.log('[Login Debug] 获取双因子验证状态');
+        const msg = await HttpUtil.post('/getTwoFactorEnable');
+
+        if (msg.success) {
+          this.twoFactorEnable = msg.obj;
+          this.loadingStates.fetched = true;
+          console.log('[Login Debug] 双因子验证状态:', this.twoFactorEnable);
+
+          return msg.obj;
+        }
+      },
+    },
+  });
+
+  document.addEventListener("DOMContentLoaded", function () {
+    var animationDelay = 2000;
+    initHeadline();
+
+    function initHeadline() {
+      animateHeadline(document.querySelectorAll('.headline'));
+    }
+
+    function animateHeadline(headlines) {
+      var duration = animationDelay;
+      headlines.forEach(function (headline) {
+        setTimeout(function () {
+          hideWord(headline.querySelector('.is-visible'));
+        }, duration);
+      });
+    }
+
+    function hideWord(word) {
+      var nextWord = takeNext(word);
+      switchWord(word, nextWord);
+      setTimeout(function () {
+        hideWord(nextWord);
+      }, animationDelay);
+    }
+
+    function takeNext(word) {
+      return word.nextElementSibling ? word.nextElementSibling : word.parentElement.firstElementChild;
+    }
+
+    function switchWord(oldWord, newWord) {
+      oldWord.classList.remove('is-visible');
+      oldWord.classList.add('is-hidden');
+      newWord.classList.remove('is-hidden');
+      newWord.classList.add('is-visible');
+    }
+  });
+
+  const pm_input_selector = 'input.ant-input, textarea.ant-input';
+  const pm_strip_props = [
+    'background',
+    'background-color',
+    'background-image',
+    'color'
+  ];
+
+  const pm_observed_forms = new WeakSet();
+
+  function pm_strip_inline(el) {
+    if (!el || el.nodeType !== 1 || !el.matches?.(pm_input_selector)) return;
+
+    let did_change = false;
+    for (const prop of pm_strip_props) {
+      if (el.style.getPropertyValue(prop)) {
+        el.style.removeProperty(prop);
+        did_change = true;
+      }
+    }
+
+    if (did_change && el.style.length === 0) {
+      el.removeAttribute('style');
+    }
+  }
+
+  function pm_attach_observer(form) {
+    if (pm_observed_forms.has(form)) return;
+    pm_observed_forms.add(form);
+
+    form.querySelectorAll(pm_input_selector).forEach(pm_strip_inline);
+
+    const pm_mo = new MutationObserver(mutations => {
+      for (const m of mutations) {
+        if (m.type === 'attributes') {
+          pm_strip_inline(m.target);
+        } else if (m.type === 'childList') {
+          for (const n of m.addedNodes) {
+            if (n.nodeType !== 1) continue;
+            if (n.matches?.(pm_input_selector)) pm_strip_inline(n);
+            n.querySelectorAll?.(pm_input_selector).forEach(pm_strip_inline);
+          }
+        }
+      }
+    });
+
+    pm_mo.observe(form, {
+      attributes: true,
+      attributeFilter: ['style'],
+      childList: true,
+      subtree: true
+    });
+  }
+
+  function pm_init() {
+    document.querySelectorAll('form.ant-form').forEach(pm_attach_observer);
+    const pm_host = document.getElementById('login') || document.body;
+    const pm_wait_for_forms = new MutationObserver(mutations => {
+      for (const m of mutations) {
+        for (const n of m.addedNodes) {
+          if (n.nodeType !== 1) continue;
+          if (n.matches?.('form.ant-form')) pm_attach_observer(n);
+          n.querySelectorAll?.('form.ant-form').forEach(pm_attach_observer);
+        }
+      }
+    });
+    pm_wait_for_forms.observe(pm_host, { childList: true, subtree: true });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', pm_init, { once: true });
+  } else {
+    pm_init();
+  }
+</script>
+{{ template "page/body_end" .}}

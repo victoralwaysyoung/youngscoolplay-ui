@@ -1,0 +1,13 @@
+#!/sbin/openrc-run
+
+command="/usr/local/YOUNGSCOOLPLAY-UI/YOUNGSCOOLPLAY-UI"
+command_background=true
+pidfile="/run/YOUNGSCOOLPLAY-UI.pid"
+description="YOUNGSCOOLPLAY-UI Service"
+procname="YOUNGSCOOLPLAY-UI"
+depend() {
+    need net
+}
+start_pre(){
+    cd /usr/local/YOUNGSCOOLPLAY-UI
+}

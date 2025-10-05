@@ -1,0 +1,105 @@
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+main
+youngscoolplay-ui
+3youngscoolplay-ui.exe
+
+# Test binary, built with `go test -c`
+*.test
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out
+
+# Go workspace file
+go.work
+
+# IDE and editor files
+.idea/
+.vscode/
+.cache/
+.sync*
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Project specific files
+*.db
+youngscoolplay-ui.db
+x-ui.db
+*.log
+log/
+logs/
+*.pid
+*.seed
+*.pid.lock
+
+# Temporary files
+tmp/
+temp/
+.tmp/
+*.tar.gz
+*.zip
+*.rar
+*.7z
+
+# Build and distribution directories
+backup/
+bin/xray*
+bin/geoip.dat
+bin/geosite.dat
+dist/
+release/
+build/
+node_modules/
+
+# Xray temporary files
+.xray_tmp/
+xray-core.zip
+xray-windows-64.zip
+
+# Configuration files with sensitive data
+config.json
+*.key
+*.pem
+*.crt
+*.cert
+*.p12
+
+# SSL certificates
+windows_files/SSL/
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Docker specific files
+docker-compose.override.yml
+
+# Script and executable files
+/release.sh
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# Archive files
+*.AppImage
+*.lnk

@@ -1,0 +1,176 @@
+/* 企业登录界面样式 */
+.company-header {
+  text-align: center;
+  margin-bottom: 30px;
+  padding: 20px 0;
+  border-bottom: 2px solid #1890ff;
+}
+
+.company-logo {
+  width: 120px;
+  height: 120px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(24, 144, 255, 0.15);
+}
+
+.company-name {
+  color: #1890ff;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 8px;
+  text-shadow: 0 2px 4px rgba(24, 144, 255, 0.1);
+}
+
+.system-title {
+  color: #666;
+  font-size: 16px;
+  font-weight: normal;
+  margin-bottom: 0;
+}
+
+/* 协议相关样式 */
+.agreement-section {
+  margin-bottom: 20px;
+}
+
+.agreement-section h4 {
+  color: #1890ff;
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  border-left: 4px solid #1890ff;
+  padding-left: 10px;
+}
+
+.agreement-section p {
+  line-height: 1.6;
+  margin-bottom: 10px;
+  text-align: justify;
+  color: #333;
+}
+
+.agreement-content {
+  max-height: 500px;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+.agreement-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.agreement-content::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.agreement-content::-webkit-scrollbar-thumb {
+  background: #1890ff;
+  border-radius: 3px;
+}
+
+.agreement-content::-webkit-scrollbar-thumb:hover {
+  background: #40a9ff;
+}
+
+.agreement-footer {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid #e8e8e8;
+}
+
+.agreement-footer p {
+  color: #999;
+  font-size: 12px;
+  text-align: center;
+}
+
+.agreement-checkbox {
+  margin: 15px 0;
+}
+
+.agreement-link {
+  color: #1890ff;
+  text-decoration: none;
+  margin-left: 5px;
+}
+
+.agreement-link:hover {
+  color: #40a9ff;
+  text-decoration: underline;
+}
+
+/* 登录表单样式增强 */
+.login-app .ant-form-item {
+  margin-bottom: 20px;
+}
+
+.login-app .ant-btn-primary {
+  background-color: #1890ff;
+  border-color: #1890ff;
+  height: 40px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.login-app .ant-btn-primary:hover {
+  background-color: #40a9ff;
+  border-color: #40a9ff;
+}
+
+.login-app .ant-btn-primary:disabled {
+  background-color: #f5f5f5;
+  border-color: #d9d9d9;
+  color: #bfbfbf;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .company-logo {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .company-name {
+    font-size: 20px;
+  }
+  
+  .system-title {
+    font-size: 14px;
+  }
+  
+  .agreement-content {
+    max-height: 400px;
+  }
+}
+
+/* 暗色主题适配 */
+.dark .company-name {
+  color: #69c0ff;
+}
+
+.dark .system-title {
+  color: #bfbfbf;
+}
+
+.dark .agreement-section h4 {
+  color: #69c0ff;
+  border-left-color: #69c0ff;
+}
+
+.dark .agreement-section p {
+  color: #d9d9d9;
+}
+
+.dark .agreement-footer p {
+  color: #8c8c8c;
+}
+
+.dark .agreement-link {
+  color: #69c0ff;
+}
+
+.dark .agreement-link:hover {
+  color: #91d5ff;
+}

@@ -1,0 +1,541 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="renderer" content="webkit">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex,nofollow">
+  <link rel="stylesheet" href="/assets/ant-design-vue/antd.min.css">
+  <link rel="stylesheet" href="/assets/css/custom.min.css?2.8.4">
+  <style>
+    [v-cloak] {
+      display: none;
+    }
+     
+    @font-face {
+      font-display: swap;
+      font-family: 'Vazirmatn';
+      font-style: normal;
+      font-weight: 400;
+      src: url('/assets/Vazirmatn-UI-NL-Regular.woff2') format('woff2');
+      unicode-range: U+0600-06FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE80-FEFC, U+0030-0039;
+    }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Vazirmatn', 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+  </style>
+  <title>localhost – Welcome</title>
+
+  <link rel="stylesheet" href="/assets/css/company-login.css">
+
+</head>
+
+
+
+<body>
+  <div id="message"></div>
+
+<a-layout id="app" v-cloak :class="themeSwitcher.currentTheme + ' login-app'">
+  <transition name="list" appear>
+  <a-layout-content class="under min-h-0">
+      <div class="waves-header">
+        <div class="waves-inner-header"></div>
+        <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+          viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+          <defs>
+            <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+          </defs>
+          <g class="parallax">
+            <use xlink:href="#gentle-wave" x="48" y="0" fill="rgba(0, 135, 113, 0.08)" />
+            <use xlink:href="#gentle-wave" x="48" y="3" fill="rgba(0, 135, 113, 0.08)" />
+            <use xlink:href="#gentle-wave" x="48" y="5" fill="rgba(0, 135, 113, 0.08)" />
+            <use xlink:href="#gentle-wave" x="48" y="7" fill="#c7ebe2" />
+          </g>
+        </svg>
+      </div>
+  <a-row type="flex" justify="center" align="middle" class="h-100 overflow-y-auto overflow-x-hidden">
+        <a-col :xs="22" :sm="12" :md="10" :lg="8" :xl="6" :xxl="5" id="login" class="my-3rem">
+          <template v-if="!loadingStates.fetched">
+            <div class="text-center">
+              <a-spin size="large" />
+            </div>
+          </template>
+          <template v-else>
+            <div class="setting-section">
+              <a-popover :overlay-class-name="themeSwitcher.currentTheme" title='Panel Settings'
+                placement="bottomRight" trigger="click">
+                <template slot="content">
+                  <a-space direction="vertical" :size="10">
+                    <a-theme-switch-login></a-theme-switch-login>
+                    <span>Language</span>
+                    <a-select ref="selectLang" class="w-100" v-model="lang"
+                      @change="LanguageManager.setLanguage(lang)" :dropdown-class-name="themeSwitcher.currentTheme">
+                      <a-select-option :value="l.value" label="English" v-for="l in LanguageManager.supportedLanguages">
+                        <span role="img" aria-label="l.name" v-text="l.icon"></span>
+                        &nbsp;&nbsp;<span v-text="l.name"></span>
+                      </a-select-option>
+                    </a-select>
+                  </a-space>
+                </template>
+                <a-button shape="circle" icon="setting"></a-button>
+              </a-popover>
+            </div>
+            
+            <a-row type="flex" justify="center" class="company-header">
+              <a-col :style="{ width: '100%', textAlign: 'center', marginBottom: '2rem' }">
+                <h1 class="company-name">四川漾式酷玩进出口贸易有限公司</h1>
+                <h3 class="system-title">内部专用系统</h3>
+              </a-col>
+            </a-row>
+            <a-row type="flex" justify="center">
+              <a-col :style="{ width: '100%' }">
+                <h2 class="title headline zoom">
+                  <span class="words-wrapper">
+                    <span class="is-visible">Hello</span>
+                    <span>Welcome</span>
+                  </span>
+                </h2>
+              </a-col>
+            </a-row>
+            <a-row type="flex" justify="center">
+              <a-col span="24">
+                <a-form @submit.prevent="login">
+                  <a-space direction="vertical" size="middle">
+                    <a-form-item>
+                      <a-input autocomplete="username" name="username" v-model.trim="user.username"
+                        placeholder='Username' autofocus required>
+                        <a-icon slot="prefix" type="user" class="fs-1rem"></a-icon>
+                      </a-input>
+                    </a-form-item>
+                    <a-form-item>
+                      <a-input-password autocomplete="password" name="password" v-model.trim="user.password"
+                        placeholder='Password' required>
+                        <a-icon slot="prefix" type="lock" class="fs-1rem"></a-icon>
+                      </a-input-password>
+                    </a-form-item>
+                    <a-form-item v-if="twoFactorEnable">
+                      <a-input autocomplete="one-time-code" name="twoFactorCode" v-model.trim="user.twoFactorCode"
+                        placeholder='Code' required>
+                        <a-icon slot="prefix" type="key" class="fs-1rem"></a-icon>
+                      </a-input>
+                    </a-form-item>
+                    
+                    <a-form-item>
+                      <a-checkbox v-model="agreementChecked" @change="onAgreementChange">
+                        我已阅读并同意《跨境网络访问软件使用协议与免责声明》
+                      </a-checkbox>
+                      <div style="margin-top: 8px;">
+                        <a-button type="link" size="small" @click="showAgreementModal" style="padding: 0; height: auto;">
+                          查看完整协议
+                        </a-button>
+                      </div>
+                    </a-form-item>
+                    <a-form-item>
+                      <a-row justify="center" class="centered">
+                        <div class="wave-btn-bg wave-btn-bg-cl h-50px mt-1rem" :style="loadingStates.spinning ? 'width: 52px' : 'display: inline-block'">
+                          <a-button class="ant-btn-primary-login" type="primary" :loading="loadingStates.spinning"
+                            :disabled="!agreementChecked" :icon="loadingStates.spinning ? 'poweroff' : undefined" html-type="submit">
+                            [[ loadingStates.spinning ? '' : 'Log In' ]]
+                          </a-button>
+                        </div>
+                      </a-row>
+                    </a-form-item>
+                  </a-space>
+                </a-form>
+              </a-col>
+            </a-row>
+          </template>
+        </a-col>
+      </a-row>
+    </a-layout-content>
+  </transition>
+  
+  
+  <a-modal
+    title="跨境网络访问软件使用协议与免责声明"
+    :visible="agreementModalVisible"
+    @ok="closeAgreementModal"
+    @cancel="closeAgreementModal"
+    :width="800"
+    :footer="[{text: '我已阅读', type: 'primary', onClick: closeAgreementModal}]"
+    :class="themeSwitcher.currentTheme"
+  >
+    <div class="agreement-content">
+      <div class="agreement-section">
+        <p><strong>重要提示：</strong></p>
+        <p>请在使用本软件前仔细阅读以下协议内容。如您不同意本协议的任何条款，请立即停止使用并卸载本软件。一旦您勾选"我已阅读并同意以上协议"并登录使用，即视为您已充分理解、认可并无条件接受本协议全部内容，本协议即构成对双方具有法律约束力的有效文件。</p>
+      </div>
+      
+      <div class="agreement-section">
+        <h4>一、软件性质与使用目的</h4>
+        <p>1.1 本软件由四川漾式酷玩进出口贸易有限公司（以下简称"本公司"）基于自身合法跨境电商业务需求开发，现仅为具备合法资质的进出口企业提供跨境网络搭建技术咨询服务，协助其通过合规技术手段访问国际电商平台（如Amazon、eBay、Alibaba International等），仅限于进行正当的国际贸易活动。</p>
+        <p>1.2 本软件不含有任何破坏网络安全、规避国家网络监管秩序的功能，其设计初衷及服务内容严格遵循《中华人民共和国网络安全法》《中华人民共和国数据安全法》及相关法律法规。</p>
+      </div>
+      
+      <div class="agreement-section">
+        <h4>二、用户资格与使用规范</h4>
+        <p>2.1 用户须为依法注册并存续的企业法人，且其使用本软件的目的必须限于开展合法的进出口贸易业务，不得用于任何非法用途（包括但不限于访问违法网站、传播违法违规信息、从事危害国家安全、泄露国家秘密、颠覆国家政权、破坏国家统一等活动）。</p>
+        <p>2.2 用户承诺在使用过程中严格遵守中国法律法规，坚持爱党爱国原则，维护国家利益和社会稳定，不得利用本软件从事任何损害国家荣誉和利益的行为。</p>
+        <p>2.3 用户不得对软件程序进行任何形式的反向工程、修改、篡改或破解，不得擅自扩大访问范围至非电商类网站或IP地址。如因私自修改程序导致任何刑事、行政或民事责任，本公司有权依法追究其法律责任，并保留要求赔偿全部损失（包括但不限于直接经济损失、商誉损失及维权合理支出）的权利。</p>
+      </div>
+      
+      <div class="agreement-section">
+        <h4>三、服务模式与商业化限制</h4>
+        <p>3.1 本软件仅为免费技术分享，不收取任何软件许可费用。本公司提供的配套安装、配置及网络搭建服务属于技术咨询服务范畴，并非软件销售或商业化运营。</p>
+        <p>3.2 用户不得将本软件以任何形式进行商业化使用、复制、分发或转让，不得基于本软件提供代理服务或衍生商业产品。</p>
+      </div>
+      
+      <div class="agreement-section">
+        <h4>四、风险提示与责任豁免</h4>
+        <p>4.1 用户知悉并同意，任何技术手段均可能存在不可预知的风险，包括但不限于网络波动、数据丢失、第三方攻击等。因上述风险导致的损失，本公司不承担任何责任。</p>
+        <p>4.2 如用户违反本协议约定，擅自将软件用于非法活动或修改程序功能，由此产生的一切法律责任（包括但不限于行政处罚、刑事责任、涉外法律纠纷）均由用户独立承担，与本公司无关。</p>
+        <p>4.3 用户应自行确保其使用行为符合所在国家/地区的法律法规。如因用户行为导致本公司卷入法律纠纷，用户应负责消除影响、承担全部赔偿费用，并使本公司免受损害。</p>
+      </div>
+      
+      <div class="agreement-section">
+        <h4>五、协议终止与追责权利</h4>
+        <p>5.1 如用户违反本协议任一条款，本公司有权立即终止其使用资格，并保留通过行政投诉、民事诉讼、刑事报案等途径追究其责任的权利。</p>
+        <p>5.2 本协议的最终解释权归本公司所有，本公司有权根据法律法规或政策要求更新本协议，更新后的协议自公布于登录界面时生效。</p>
+      </div>
+      
+      <div class="agreement-footer">
+        <p>请务必确保实际业务模式与条款表述一致，并建议由专业律师结合具体技术细节最终审定。此文本仅为参考框架，不构成正式法律意见。</p>
+      </div>
+    </div>
+  </a-modal>
+</a-layout>
+
+<script src="/assets/vue/vue.min.js?2.8.4"></script>
+<script src="/assets/moment/moment.min.js"></script>
+<script src="/assets/ant-design-vue/antd.min.js"></script>
+<script src="/assets/axios/axios.min.js?2.8.4"></script>
+<script src="/assets/qs/qs.min.js"></script>
+<script src="/assets/js/axios-init.js?2.8.4"></script>
+<script src="/assets/js/util/date-util.js?2.8.4"></script>
+<script src="/assets/js/util/index.js?2.8.4"></script>
+<script>
+  const basePath = '\/';
+  axios.defaults.baseURL = basePath;
+</script>
+
+
+<script>
+  function createThemeSwitcher() {
+    const isDarkTheme = localStorage.getItem('dark-mode') === 'true';
+    const isUltra = localStorage.getItem('isUltraDarkThemeEnabled') === 'true';
+    if (isUltra) {
+      document.documentElement.setAttribute('data-theme', 'ultra-dark');
+    }
+    const theme = isDarkTheme ? 'dark' : 'light';
+    document.querySelector('body').setAttribute('class', theme);
+    return {
+      animationsOff() {
+        document.documentElement.setAttribute('data-theme-animations', 'off');
+        const themeAnimations = document.querySelector('#change-theme');
+        themeAnimations.addEventListener('mouseleave', () => {
+          document.documentElement.removeAttribute('data-theme-animations');
+        });
+        themeAnimations.addEventListener('touchend', () => {
+          document.documentElement.removeAttribute('data-theme-animations');
+        });
+      },
+      animationsOffUltra() {
+        document.documentElement.setAttribute('data-theme-animations', 'off');
+        const themeAnimationsUltra = document.querySelector('#change-theme-ultra');
+        themeAnimationsUltra.addEventListener('mouseleave', () => {
+          document.documentElement.removeAttribute('data-theme-animations');
+        });
+        themeAnimationsUltra.addEventListener('touchend', () => {
+          document.documentElement.removeAttribute('data-theme-animations');
+        });
+      },
+      isDarkTheme,
+      isUltra,
+      get currentTheme() {
+        return this.isDarkTheme ? 'dark' : 'light';
+      },
+      toggleTheme() {
+        this.isDarkTheme = !this.isDarkTheme;
+        localStorage.setItem('dark-mode', this.isDarkTheme);
+        document.querySelector('body').setAttribute('class', this.isDarkTheme ? 'dark' : 'light');
+        document.getElementById('message').className = themeSwitcher.currentTheme;
+      },
+      toggleUltra() {
+        this.isUltra = !this.isUltra;
+        if (this.isUltra) {
+          document.documentElement.setAttribute('data-theme', 'ultra-dark');
+        } else {
+          document.documentElement.removeAttribute('data-theme');
+        }
+        localStorage.setItem('isUltraDarkThemeEnabled', this.isUltra.toString());
+      }
+    };
+  }
+  const themeSwitcher = createThemeSwitcher();
+  Vue.component('a-theme-switch', {
+    template: `
+<template>
+  <a-menu :theme="themeSwitcher.currentTheme" mode="inline" selected-keys="">
+    <a-sub-menu>
+      <span slot="title">
+        <a-icon type="bulb" :theme="themeSwitcher.isDarkTheme ? 'filled' : 'outlined'"></a-icon>
+        <span>Theme</span>
+      </span>
+      <a-menu-item id="change-theme" class="ant-menu-theme-switch" @mousedown="themeSwitcher.animationsOff()">
+        <span>Dark</span>
+        <a-switch :style="{ marginLeft: '2px' }" size="small" :default-checked="themeSwitcher.isDarkTheme"
+          @change="themeSwitcher.toggleTheme()"></a-switch>
+      </a-menu-item>
+      <a-menu-item id="change-theme-ultra" v-if="themeSwitcher.isDarkTheme" class="ant-menu-theme-switch"
+        @mousedown="themeSwitcher.animationsOffUltra()">
+        <span>Ultra Dark</span>
+        <a-checkbox :style="{ marginLeft: '2px' }" :checked="themeSwitcher.isUltra"
+          @click="themeSwitcher.toggleUltra()"></a-checkbox>
+      </a-menu-item>
+    </a-sub-menu>
+  </a-menu>
+</template>
+`,
+    data: () => ({
+      themeSwitcher
+    }),
+    mounted() {
+      this.$message.config({
+        getContainer: () => document.getElementById('message')
+      });
+      document.getElementById('message').className = themeSwitcher.currentTheme;
+    }
+  });
+  Vue.component('a-theme-switch-login', {
+    template: `
+<template>
+  <a-space @mousedown="themeSwitcher.animationsOff()" id="change-theme" direction="vertical" :size="10" :style="{ width: '100%' }">
+    <a-space direction="horizontal" size="small">
+      <a-switch size="small" :default-checked="themeSwitcher.isDarkTheme" @change="themeSwitcher.toggleTheme()"></a-switch>
+      <span>Dark</span>
+    </a-space>
+    <a-space v-if="themeSwitcher.isDarkTheme" direction="horizontal" size="small">
+      <a-checkbox :checked="themeSwitcher.isUltra" @click="themeSwitcher.toggleUltra()"></a-checkbox>
+      <span>Ultra Dark</span>
+    </a-space>
+  </a-space>
+</template>
+`,
+    data: () => ({
+      themeSwitcher
+    }),
+    mounted() {
+      this.$message.config({
+        getContainer: () => document.getElementById('message')
+      });
+      document.getElementById('message').className = themeSwitcher.currentTheme;
+    }
+  });
+</script>
+
+<script>
+  const app = new Vue({
+    delimiters: ['[[', ']]'],
+    el: '#app',
+    data: {
+      themeSwitcher,
+      loadingStates: {
+        fetched: false,
+        spinning: false
+      },
+      user: {
+        username: "",
+        password: "",
+        twoFactorCode: ""
+      },
+      twoFactorEnable: false,
+      lang: "",
+      agreementChecked: false,
+      agreementModalVisible: false
+    },
+    async mounted() {
+      this.lang = LanguageManager.getLanguage();
+      this.twoFactorEnable = await this.getTwoFactorEnable();
+    },
+    methods: {
+      async login() {
+        console.log('[Login Debug] 开始登录流程');
+        console.log('[Login Debug] 用户名:', this.user.username);
+        console.log('[Login Debug] 协议同意状态:', this.agreementChecked);
+        
+        if (!this.agreementChecked) {
+          console.warn('[Login Debug] 用户未同意协议，阻止登录');
+          this.$message.error('请先阅读并同意使用协议');
+          return;
+        }
+        
+        this.loadingStates.spinning = true;
+
+        console.log('[Login Debug] 发送登录请求');
+        const msg = await HttpUtil.post('/login', this.user);
+
+        console.log('[Login Debug] 登录响应:', msg);
+        if (msg.success) {
+          console.log('[Login Debug] 登录成功，跳转到面板');
+          location.href = basePath + 'panel/';
+        } else {
+          console.error('[Login Debug] 登录失败:', msg.msg);
+        }
+
+        this.loadingStates.spinning = false;
+      },
+      
+      showAgreementModal() {
+        console.log('[Agreement Debug] 显示协议模态窗口');
+        this.agreementModalVisible = true;
+      },
+      
+      closeAgreementModal() {
+        console.log('[Agreement Debug] 关闭协议模态窗口并自动勾选协议');
+        this.agreementModalVisible = false;
+        this.agreementChecked = true;
+        console.log('[Agreement Debug] 自动勾选协议完成，协议状态:', this.agreementChecked);
+      },
+      
+      onAgreementChange(e) {
+        this.agreementChecked = e.target.checked;
+        console.log('[Agreement Debug] 协议同意状态变更:', this.agreementChecked);
+        if (this.agreementChecked) {
+          console.log('[Agreement Debug] 用户同意协议');
+        } else {
+          console.log('[Agreement Debug] 用户取消同意协议');
+        }
+      },
+      
+      async getTwoFactorEnable() {
+        console.log('[Login Debug] 获取双因子验证状态');
+        const msg = await HttpUtil.post('/getTwoFactorEnable');
+
+        if (msg.success) {
+          this.twoFactorEnable = msg.obj;
+          this.loadingStates.fetched = true;
+          console.log('[Login Debug] 双因子验证状态:', this.twoFactorEnable);
+
+          return msg.obj;
+        }
+      },
+    },
+  });
+
+  document.addEventListener("DOMContentLoaded", function () {
+    var animationDelay = 2000;
+    initHeadline();
+
+    function initHeadline() {
+      animateHeadline(document.querySelectorAll('.headline'));
+    }
+
+    function animateHeadline(headlines) {
+      var duration = animationDelay;
+      headlines.forEach(function (headline) {
+        setTimeout(function () {
+          hideWord(headline.querySelector('.is-visible'));
+        }, duration);
+      });
+    }
+
+    function hideWord(word) {
+      var nextWord = takeNext(word);
+      switchWord(word, nextWord);
+      setTimeout(function () {
+        hideWord(nextWord);
+      }, animationDelay);
+    }
+
+    function takeNext(word) {
+      return word.nextElementSibling ? word.nextElementSibling : word.parentElement.firstElementChild;
+    }
+
+    function switchWord(oldWord, newWord) {
+      oldWord.classList.remove('is-visible');
+      oldWord.classList.add('is-hidden');
+      newWord.classList.remove('is-hidden');
+      newWord.classList.add('is-visible');
+    }
+  });
+
+  const pm_input_selector = 'input.ant-input, textarea.ant-input';
+  const pm_strip_props = [
+    'background',
+    'background-color',
+    'background-image',
+    'color'
+  ];
+
+  const pm_observed_forms = new WeakSet();
+
+  function pm_strip_inline(el) {
+    if (!el || el.nodeType !== 1 || !el.matches?.(pm_input_selector)) return;
+
+    let did_change = false;
+    for (const prop of pm_strip_props) {
+      if (el.style.getPropertyValue(prop)) {
+        el.style.removeProperty(prop);
+        did_change = true;
+      }
+    }
+
+    if (did_change && el.style.length === 0) {
+      el.removeAttribute('style');
+    }
+  }
+
+  function pm_attach_observer(form) {
+    if (pm_observed_forms.has(form)) return;
+    pm_observed_forms.add(form);
+
+    form.querySelectorAll(pm_input_selector).forEach(pm_strip_inline);
+
+    const pm_mo = new MutationObserver(mutations => {
+      for (const m of mutations) {
+        if (m.type === 'attributes') {
+          pm_strip_inline(m.target);
+        } else if (m.type === 'childList') {
+          for (const n of m.addedNodes) {
+            if (n.nodeType !== 1) continue;
+            if (n.matches?.(pm_input_selector)) pm_strip_inline(n);
+            n.querySelectorAll?.(pm_input_selector).forEach(pm_strip_inline);
+          }
+        }
+      }
+    });
+
+    pm_mo.observe(form, {
+      attributes: true,
+      attributeFilter: ['style'],
+      childList: true,
+      subtree: true
+    });
+  }
+
+  function pm_init() {
+    document.querySelectorAll('form.ant-form').forEach(pm_attach_observer);
+    const pm_host = document.getElementById('login') || document.body;
+    const pm_wait_for_forms = new MutationObserver(mutations => {
+      for (const m of mutations) {
+        for (const n of m.addedNodes) {
+          if (n.nodeType !== 1) continue;
+          if (n.matches?.('form.ant-form')) pm_attach_observer(n);
+          n.querySelectorAll?.('form.ant-form').forEach(pm_attach_observer);
+        }
+      }
+    });
+    pm_wait_for_forms.observe(pm_host, { childList: true, subtree: true });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', pm_init, { once: true });
+  } else {
+    pm_init();
+  }
+</script>
+
+</body>
+</html>
+
