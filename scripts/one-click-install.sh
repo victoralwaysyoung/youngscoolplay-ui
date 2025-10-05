@@ -202,11 +202,18 @@ download_package() {
         log_info "尝试查找可能的目录:"
         find . -type d -name "*${APP_NAME}*" -o -name "*production*" 2>/dev/null || true
         
-        # 如果 unzip 退出码不是 0，显示错误信息
-        if [[ $unzip_exit_code -ne 0 ]]; then
-            log_error "unzip 命令失败，退出码: $unzip_exit_code"
+        # 尝试更宽松的目录匹配
+        local found_dir=$(find . -maxdepth 1 -type d -name "*${APP_NAME}*" | head -1)
+        if [[ -n "$found_dir" ]]; then
+            log_warning "找到相似目录: $found_dir，尝试使用它继续安装..."
+            cd "$found_dir"
+        else
+            # 如果 unzip 退出码不是 0，显示错误信息
+            if [[ $unzip_exit_code -ne 0 ]]; then
+                log_error "unzip 命令失败，退出码: $unzip_exit_code"
+            fi
+            exit 1
         fi
-        exit 1
     fi
     
     log_success "安装包下载并解压完成"
